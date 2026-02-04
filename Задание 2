@@ -1,0 +1,120 @@
+Задание 2: проектирование API
+
+    1. Написать пример REST API запроса, который будет вызываться при переходе пользователя на данный экран.
+
+Метод: GET
+Параметры запроса:
+latitude - широта местоположения пользователя для расчета ближайшей доставки
+longitude  - долгота местоположения пользователя
+
+Пример запроса:
+GET /api/v1/partner-stores?latitude=55.7558&longitude=37.6173 HTTP/1.1
+Host: api.petrushka.zelenaya.ru
+Authorization: Bearer <user_token>
+Accept: application/json
+
+    2. Привести пример ответа этого REST API в соответствии с макетом. Формат - JSON. Учесть, что при клике на плашку магазина должен осуществляться переход по ссылке на внешний ресурс.
+
+{
+  "status": "success",
+  "data": {
+    "stores": [
+      {
+        "id": 1,
+        "name": "METRO",
+        "delivery_info": {
+          "type": "nearest_today",
+          "text": "Ближайшая доставка сегодня 21:00–23:00",
+          "time_slots": [
+            {
+              "start": "21:00",
+              "end": "23:00",
+              "is_available": true
+            }
+          ],
+          "min_delivery_time_minutes": null,
+          "max_delivery_time_minutes": null
+        },
+        "external_url": "https://partner.metro.ru/petrushka?store_id=123&user_id={USER_ID}",
+        "logo_url": "https://cdn.petrushka.zelenaya.ru/partners/metro_logo.png",
+        "rating": 4.7,
+        "is_available": true,
+        "sort_order": 1
+      },
+      {
+        "id": 2,
+        "name": "Ашан",
+        "delivery_info": {
+          "type": "nearest_today",
+          "text": "Ближайшая доставка сегодня 18:00–20:00",
+          "time_slots": [
+            {
+              "start": "18:00",
+              "end": "20:00",
+              "is_available": true
+            }
+          ],
+          "min_delivery_time_minutes": null,
+          "max_delivery_time_minutes": null
+        },
+        "external_url": "https://partner.auchan.ru/petrushka?store_id=456&user_id={USER_ID}",
+        "logo_url": "https://cdn.petrushka.zelenaya.ru/partners/auchan_logo.png",
+        "rating": 4.5,
+        "is_available": true,
+        "sort_order": 2
+      },
+      {
+        "id": 3,
+        "name": "ВкусВилл",
+        "delivery_info": {
+          "type": "fast_delivery",
+          "text": "Быстрая доставка от 20 до 60 минут",
+          "time_slots": [],
+          "min_delivery_time_minutes": 20,
+          "max_delivery_time_minutes": 60
+        },
+        "external_url": "https://partner.vkusvill.ru/petrushka?store_id=789&user_id={USER_ID}",
+        "logo_url": "https://cdn.petrushka.zelenaya.ru/partners/vkusvill_logo.png",
+        "rating": 4.9,
+        "is_available": true,
+        "sort_order": 3
+      },
+      {
+        "id": 4,
+        "name": "ВИКТОРИЯ",
+        "delivery_info": {
+          "type": "nearest_today",
+          "text": "Ближайшая доставка сегодня 17:00–19:00",
+          "time_slots": [
+            {
+              "start": "17:00",
+              "end": "19:00",
+              "is_available": true
+            }
+          ],
+          "min_delivery_time_minutes": null,
+          "max_delivery_time_minutes": null
+        },
+        "external_url": "https://partner.viktoria.ru/petrushka?store_id=101&user_id={USER_ID}",
+        "logo_url": "https://cdn.petrushka.zelenaya.ru/partners/viktoria_logo.png",
+        "rating": 4.3,
+        "is_available": true,
+        "sort_order": 4
+      }
+    ],
+    "total_count": 4,
+    "user_location": {
+      "latitude": 55.7558,
+      "longitude": 37.6173,
+      "city": "Москва"
+    }
+  }
+}
+
+delivery_info.type - определяет тип отображения информации о доставке: nearest_today - ближайшая доставка сегодня с временными интервалами, fast_delivery - быстрая доставка с указанием времени в минутах
+external_url - содержит ссылку для перехода на внешний ресурс партнера. Плейсхолдер {USER_ID} должен быть заменен на фактический ID пользователя на стороне клиента.
+logo_url - ссылка на логотип магазина для отображения на экране.
+rating - рейтинг магазина
+is_available - флаг доступности магазина в текущий момент.
+sort_order - порядок отображения магазинов
+user_location - подтверждение локации, по которой были рассчитаны данные о доставке.
